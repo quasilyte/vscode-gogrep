@@ -43,7 +43,7 @@ Some example search patterns:
 * `len($_) >= 0` - find sloppy length checks (this one is always true)
 * `json.NewDecoder($_).Decode($_)` - find [potentially erroneous](http://golang.org/issue/36225) usages of JSON decoder
 
-To run "find similar" query, run any main search command (e.g. `gogrep.searchFile`) with non-empty selection. The selected text will be used as a search pattern.
+To run "find similar" query, run any main search command (e.g. `gogrep.searchFile`) with non-empty **selection**. The **selected text** will be used as a search pattern.
 
 Another useful source of inspiration and [examples](https://github.com/quasilyte/go-ruleguard/blob/master/rules.go) is [go-ruleguard](https://github.com/quasilyte/go-ruleguard) project that uses `gogrep` for linting purposes.
 
