@@ -28,7 +28,7 @@ Search results are printed to the **output channel** named `gogrep`.
 
 The pattern language syntax is extended Go syntax. Variables with `$` prefix have special meaning.
 
-Instead of matching a literal variable, every `$<name>` matches all kinds of nodes. A pattern, like `$x` would match any expression (or statement). If a single variable used more than once in a pattern, all occurences must match identical nodes. So, `$x=$x` finds all self-assignments. Use `$_` if you don't want to name a variable (repeated `$_` variables do not cause submatch comparison).
+Instead of matching a literal variable, every `$<name>` matches all kinds of nodes. A pattern, like `$x` would match any expression (or statement). If a single variable used more than once in a pattern, all occurrences must match identical nodes. So, `$x=$x` finds all self-assignments. Use `$_` if you don't want to name a variable (repeated `$_` variables do not cause submatch comparison).
 
 Advanced queries may include special variable nodes: `foo(nil, $*_)` finds all `foo` function calls where the first argument is `nil` and all other arguments are ignored.
 
@@ -43,7 +43,7 @@ Some example search patterns:
 * `len($_) >= 0` - find sloppy length checks (this one is always true)
 * `json.NewDecoder($_).Decode($_)` - find [potentially erroneous](http://golang.org/issue/36225) usages of JSON decoder
 
-To run "find similar" query, run any main search command (e.g. `gogrep.searchFile`) with non-empty selection. Selected text will be used as a search pattern.
+To run "find similar" query, run any main search command (e.g. `gogrep.searchFile`) with non-empty selection. The selected text will be used as a search pattern.
 
 Another useful source of inspiration and [examples](https://github.com/quasilyte/go-ruleguard/blob/master/rules.go) is [go-ruleguard](https://github.com/quasilyte/go-ruleguard) project that uses `gogrep` for linting purposes.
 
