@@ -1,65 +1,71 @@
-# gogrep README
+[![Version](https://vsmarketplacebadge.apphb.com/version-short/quasilyte.gogrep.svg)](https://marketplace.visualstudio.com/items?itemName=quasilyte.gogrep)
+[![Installs](https://vsmarketplacebadge.apphb.com/downloads-short/quasilyte.gogrep.svg)](https://marketplace.visualstudio.com/items?itemName=quasilyte.gogrep)
 
-This is the README for your extension "gogrep". After writing up a brief description, we recommend including the following sections.
+# gogrep for [Visual Studio Code](https://code.visualstudio.com/)
+
+Search for Go code using AST patterns. Uses [github.com/mvdan/gogrep](https://github.com/mvdan/gogrep) tool under the hood.
 
 ## Features
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+* Search Go code using smart matching instead of regexps
+* Find similar code fragments
+* AST-based replace for quick and precise refactoring (**to be implemented**)
+* Advanced search filters (**to be implemented**)
 
-For example if there is an image subfolder under your extension project workspace:
+## Overview
 
-\!\[feature X\]\(images/feature-x.png\)
+This extension exposes `gogrep` search commands.
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+![](/docs/commands.jpg "Ctrl+Shift+P gogrep")
 
-## Requirements
+Every command creates a search pattern prompt.
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+![](/docs/pattern.jpg "search pattern prompt")
+  
+Search results are printed to the **output channel** named `gogrep`.
+
+![](/docs/output.jpg "gogrep output channel")
+
+The pattern language syntax is extended Go syntax. Variables with `$` prefix have special meaning.
+
+Instead of matching a literal variable, every `$<name>` matches all kinds of nodes. A pattern, like `$x` would match any expression (or statement). If a single variable used more than once in a pattern, all occurences must match identical nodes. So, `$x=$x` finds all self-assignments. Use `$_` if you don't want to name a variable (repeated `$_` variables do not cause submatch comparison).
+
+Advanced queries may include special variable nodes: `foo(nil, $*_)` finds all `foo` function calls where the first argument is `nil` and all other arguments are ignored.
+
+Some example search patterns:
+
+* `+$x` - find usages of unary plus operator
+* `strings.Replace($_, $_, $_, -1)` - find places where `strings.ReplaceAll` can be used
+* `$x != $_ || $x != $y` - find || operators where comparison with `$y` may be redundant
+* `copy($x, $x)` - find `copy` calls where `dst` and `src` arguments are identical
+* `$x = $x + 1` - find all statements that can be written as `$x++`
+* `map[$_]$_{$*_, $k: $_, $*_, $k: $_, $*_}` - find maps with at least 1 duplicated key
+* `len($_) >= 0` - find sloppy length checks (this one is always true)
+* `json.NewDecoder($_).Decode($_)` - find [potentially erroneous](http://golang.org/issue/36225) usages of JSON decoder
+
+To run "find similar" query, run any main search command (e.g. `gogrep.searchFile`) with non-empty selection. Selected text will be used as a search pattern.
+
+Another useful source of inspiration and [examples](https://github.com/quasilyte/go-ruleguard/blob/master/rules.go) is [go-ruleguard](https://github.com/quasilyte/go-ruleguard) project that uses `gogrep` for linting purposes.
+
+## Demo
+
+Running `$x = $x + 1` pattern that finds candidates for `$x++` refactoring:
+
+![](/docs/demo1.gif)
+
+Running `if ($cond) { $x } else { $x }` pattern that finds if statements with duplicated then/else bodies:
+
+![](/docs/demo2.gif)
 
 ## Extension Settings
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
+* `gogrep.binary`: [gogrep](https://github.com/mvdan/gogrep) binary path (default `"gogrep"`)
 
-For example:
+## Requirements
 
-This extension contributes the following settings:
+* [gogrep](https://github.com/mvdan/gogrep) binary
 
-* `myExtension.enable`: enable/disable this extension
-* `myExtension.thing`: set to `blah` to do something
+Note that this extension usually comes with precompiled binaries for some platforms. If there is no binary for your platform, you'll have to build `gogrep` from the source.
 
-## Known Issues
-
-Calling out known issues can help limit users opening duplicate issues against your extension.
-
-## Release Notes
-
-Users appreciate release notes as you update your extension.
-
-### 1.0.0
-
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
-
------------------------------------------------------------------------------------------------------------
-
-## Working with Markdown
-
-**Note:** You can author your README using Visual Studio Code.  Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux)
-* Toggle preview (`Shift+CMD+V` on macOS or `Shift+Ctrl+V` on Windows and Linux)
-* Press `Ctrl+Space` (Windows, Linux) or `Cmd+Space` (macOS) to see a list of Markdown snippets
-
-### For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
+Optional/recommended:
+* [Output Colorizer](https://marketplace.visualstudio.com/items?itemName=IBM.output-colorizer) to make the output colorized
