@@ -1,7 +1,13 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
 import * as gogrep from './gogrep';
-// import * as install from './install';
+import * as install from './install';
+
+var context : vscode.ExtensionContext;
+
+export function setContext(ctx: vscode.ExtensionContext) {
+    context = ctx;
+}
 
 // Used as the initial input value for the pattern prompt.
 // Updated after every search pattern prompt.
@@ -57,6 +63,7 @@ async function runSearch(target: string, workdir: string, lineFilter: string) {
         console.error(e);
         if (e instanceof Error && e.message.includes('ENOENT')) {
             vscode.window.showErrorMessage(`${gogrepPath} not found in PATH`);
+            install.fixMissingTool(context);
         }
     }
 }
