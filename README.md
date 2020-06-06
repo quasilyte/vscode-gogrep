@@ -9,7 +9,7 @@ Search for Go code using AST patterns. Uses [github.com/mvdan/gogrep](https://gi
 
 * Search Go code using smart matching instead of regexps
 * Find similar code fragments
-* AST-based replace for quick and precise refactoring (**to be implemented**)
+* AST-based replace for quick and precise refactoring
 * Advanced search filters (**to be implemented**)
 
 If you have a feature request (or a bug report), consider [to open the issue on the GitHub](https://github.com/quasilyte/vscode-gogrep/issues/new).
@@ -45,11 +45,15 @@ Some example search patterns:
 * `len($_) >= 0` - find sloppy length checks (this one is always true)
 * `json.NewDecoder($_).Decode($_)` - find [potentially erroneous](http://golang.org/issue/36225) usages of JSON decoder
 
-To run "find similar" query, run any main search command (e.g. `gogrep.searchFile`) with non-empty **selection**. The **selected text** will be used as a search pattern.
+To run **find similar** query, run any main search command (e.g. `gogrep.searchFile`) with non-empty **selection**. The **selected text** will be used as a search pattern.
 
-Although somewhat old, there is a [Daniel Martí talk on gogrep](https://talks.godoc.org/github.com/mvdan/talks/2018/gogrep.slide).
+To perform a **search-and-replace**, use `$find -> $replace` pattern syntax. Both `$find` and `$replace` are normal `gogrep` patterns. To write changes back to the source files, end pattern with `!`. So, `$x+=1 -> $x++ !` replaces all `$x += 1` statements with `$x++`. If `!` is omitted, replacements are printed to the output channel.
 
-Another useful source of inspiration and [examples](https://github.com/quasilyte/go-ruleguard/blob/master/rules.go) is [go-ruleguard](https://github.com/quasilyte/go-ruleguard) project that uses `gogrep` for linting purposes.
+![](/docs/replace.jpg "Search-and-replace (inplace)")
+
+Additional learning resources:
+*  Although somewhat old, there is a [Daniel Martí talk on gogrep](https://talks.godoc.org/github.com/mvdan/talks/2018/gogrep.slide).
+* Another useful source of inspiration and [examples](https://github.com/quasilyte/go-ruleguard/blob/master/rules.go) is [go-ruleguard](https://github.com/quasilyte/go-ruleguard) project that uses `gogrep` for linting purposes.
 
 ## Demo
 
