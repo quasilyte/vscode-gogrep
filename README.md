@@ -61,6 +61,10 @@ Running `$x = append($x, $_); $x = append($x, $_)` pattern that finds consecutiv
 
 ![](/docs/demo.gif)
 
+Doing a search-and-replace for with `$x+=1 -> $x++ !` pattern:
+
+![](/docs/replace-demo.gif)
+
 ## Extension Settings
 
 * `gogrep.binary`: [gogrep](https://github.com/mvdan/gogrep) binary path (default `"gogrep"`)
