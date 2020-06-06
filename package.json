@@ -45,6 +45,12 @@
 					"default": "gogrep",
 					"description": "gogrep binary path",
 					"scope": "resource"
+				},
+				"gogrep.gopath": {
+					"type": "boolean",
+					"default": false,
+					"description": "whether to set GOPATH to go.gopath",
+					"scope": "resource"
 				}
 			}
 		},
