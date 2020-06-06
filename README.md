@@ -53,13 +53,9 @@ Another useful source of inspiration and [examples](https://github.com/quasilyte
 
 ## Demo
 
-Running `$x = $x + $y` pattern that finds candidates for `$x += $y` refactoring:
+Running `$x = append($x, $_); $x = append($x, $_)` pattern that finds consecutive appends to the same slice:
 
-![](/docs/demo1.gif)
-
-Running `if ($cond) { $x } else { $x }` pattern that finds if statements with duplicated then/else bodies:
-
-![](/docs/demo2.gif)
+![](/docs/demo.gif)
 
 ## Extension Settings
 
