@@ -12,6 +12,8 @@ Search for Go code using AST patterns. Uses [github.com/mvdan/gogrep](https://gi
 * AST-based replace for quick and precise refactoring (**to be implemented**)
 * Advanced search filters (**to be implemented**)
 
+If you have a feature request, consider [to open the issue on the GitHub](https://github.com/quasilyte/vscode-gogrep/issues/new).
+
 ## Overview
 
 This extension exposes `gogrep` search commands.
@@ -45,6 +47,8 @@ Some example search patterns:
 
 To run "find similar" query, run any main search command (e.g. `gogrep.searchFile`) with non-empty **selection**. The **selected text** will be used as a search pattern.
 
+Although somewhat old, there is a [Daniel Martí talk on gogrep](https://talks.godoc.org/github.com/mvdan/talks/2018/gogrep.slide).
+
 Another useful source of inspiration and [examples](https://github.com/quasilyte/go-ruleguard/blob/master/rules.go) is [go-ruleguard](https://github.com/quasilyte/go-ruleguard) project that uses `gogrep` for linting purposes.
 
 ## Demo
@@ -60,6 +64,9 @@ Running `if ($cond) { $x } else { $x }` pattern that finds if statements with du
 ## Extension Settings
 
 * `gogrep.binary`: [gogrep](https://github.com/mvdan/gogrep) binary path (default `"gogrep"`)
+* `gogrep.gopath`: whether to set gogrep process `GOPATH` to `go.gopath` (default `false`)
+
+By default, we rely on Go modules. If it's not working for you, it's possible to try the `GOPATH` approach. To do that, set `gogrep.gopath` option to `true`. It will use the Go mode `go.gopath` config value to set the spawned `gogrep` process `GOPATH` environment variable.
 
 ## Requirements
 
@@ -69,3 +76,10 @@ Note that this extension usually comes with precompiled binaries for some platfo
 
 Optional/recommended:
 * [Output Colorizer](https://marketplace.visualstudio.com/items?itemName=IBM.output-colorizer) to make the output colorized
+
+## Contributing
+
+The easiest, though a very good way to contribute and show gratitude is to put a ⭐️ to<br>
+[mvdan/gogrep](https://github.com/mvdan/gogrep) and [quasilyte/vscode-gogrep](https://github.com/quasilyte/vscode-gogrep). :)
+
+Contributions can be made to either of the referenced projects. PRs, bug reports and feature requests are welcome.
