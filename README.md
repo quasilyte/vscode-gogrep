@@ -49,7 +49,7 @@ Another useful source of inspiration and [examples](https://github.com/quasilyte
 
 ## Demo
 
-Running `$x = $x + 1` pattern that finds candidates for `$x++` refactoring:
+Running `$x = $x + $y` pattern that finds candidates for `$x += $y` refactoring:
 
 ![](/docs/demo1.gif)
 
