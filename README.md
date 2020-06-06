@@ -30,6 +30,11 @@ Search results are printed to the **output channel** named `gogrep`.
 
 The pattern language syntax is extended Go syntax. Variables with `$` prefix have special meaning.
 
+> A pattern is a piece of Go code which may include dollar expressions. It can be
+a number of statements, a number of expressions, a declaration, or an entire
+file. A dollar expression consist of '$' and a name. Dollar expressions with the same
+name within a query always match the same node, excluding "_".
+
 Instead of matching a literal variable, every `$<name>` matches all kinds of nodes. A pattern, like `$x` would match any expression (or statement). If a single variable used more than once in a pattern, all occurrences must match identical nodes. So, `$x=$x` finds all self-assignments. Use `$_` if you don't want to name a variable (repeated `$_` variables do not cause submatch comparison).
 
 Advanced queries may include special variable nodes: `foo(nil, $*_)` finds all `foo` function calls where the first argument is `nil` and all other arguments are ignored.
