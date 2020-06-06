@@ -3,7 +3,7 @@
 	"displayName": "gogrep (Semantic Go code search)",
 	"description": "Structural, syntax-aware search for Go code",
 	"publisher": "quasilyte",
-	"version": "0.1.4",
+	"version": "0.1.5",
 	"preview": true,
 	"icon": "docs/logo.png",
 	"license": "MIT",
