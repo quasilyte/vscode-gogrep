@@ -12,7 +12,7 @@ Search for Go code using AST patterns. Uses [github.com/mvdan/gogrep](https://gi
 * AST-based replace for quick and precise refactoring (**to be implemented**)
 * Advanced search filters (**to be implemented**)
 
-If you have a feature request, consider [to open the issue on the GitHub](https://github.com/quasilyte/vscode-gogrep/issues/new).
+If you have a feature request (or a bug report), consider [to open the issue on the GitHub](https://github.com/quasilyte/vscode-gogrep/issues/new).
 
 ## Overview
 
