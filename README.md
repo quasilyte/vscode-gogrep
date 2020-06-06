@@ -16,7 +16,7 @@ If you have a feature request (or a bug report), consider [to open the issue on 
 
 ## Overview
 
-This extension exposes `gogrep` search commands.
+This extension exposes `gogrep` search commands (`Ctrl+Shift+P`).
 
 ![](/docs/commands.jpg "Ctrl+Shift+P gogrep")
 
