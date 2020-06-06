@@ -13,7 +13,7 @@ export function setContext(ctx: vscode.ExtensionContext) {
 // Updated after every search pattern prompt.
 var lastSearchPattern = '';
 
-async function runSearch(target: string, workdir: string, lineFilter: string) {
+async function runSearch(target: string, workdir: string, filename: string) {
     let searchPattern = '';
     // Pattern source 1: cursor selection.
     // Performs a "find similar" search.
@@ -41,6 +41,35 @@ async function runSearch(target: string, workdir: string, lineFilter: string) {
         return;
     }
 
+    // There are 3 kinds of search patterns:
+    // 1. Search-and-replace pattern when pattern contains '->'.
+    // 2. If search-and-replace pattern ends with '!', inplace is set to true.
+    // 3. Otherwise it's a simple search-only pattern.
+    let replacePattern = '';
+    let inplace = false;
+    if (searchPattern.includes("->")) {
+        const parts = searchPattern.split("->");
+        if (parts.length > 2) {
+            vscode.window.showWarningMessage("Expected at most one '->' token");
+            return;
+        }
+        searchPattern = parts[0].trim();
+        replacePattern = parts[1].trim();
+        if (replacePattern.endsWith("!")) {
+            replacePattern = replacePattern.slice(0, -1); // rtrim "!"
+            inplace = true;
+        }
+    }
+    if (filename !== "" && inplace) {
+        // Since we're doing a client-side output filtering in a single file mode,
+        // it's not safe to run gogrep with -w param as
+        // it will update all package files, not just the selected one.
+        //
+        // See https://github.com/mvdan/gogrep/issues/56.
+        vscode.window.showWarningMessage("In-place replace for a single file is not implemented yet");
+        return;
+    }
+
     const cfg = vscode.workspace.getConfiguration('gogrep');
     const gogrepPath = cfg.get<string>('binary');
     if (!gogrepPath) {
@@ -53,11 +82,13 @@ async function runSearch(target: string, workdir: string, lineFilter: string) {
     try {
         await gogrep.runSearch({
             target: target,
-            pattern: searchPattern,
+            search: searchPattern,
+            replace: replacePattern,
+            inplace: inplace,
             binary: gogrepPath,
             workdir: workdir,
             gopath: gopath || "",
-            lineFilter: lineFilter,
+            lineFilter: filename,
         });
     } catch (e) {
         console.error(e);

@@ -19,7 +19,13 @@ export interface SearchOptions {
     gopath: string;
 
     // gogrep search pattern to execute.
-    pattern: string;
+    search: string;
+
+    // gogrep replacement pattern to be applied.
+    replace: string;
+
+    // Whether the replacement should be written to the source files.
+    inplace: boolean;
 
     // gogrep binary path.
     binary: string;
@@ -44,15 +50,31 @@ export function runSearch(opts: SearchOptions): Promise<void> {
         }
         const args = [
             '-tests', // Probably needs some control via configuraion
-            '-x', opts.pattern,
-            opts.target,
+            '-x', opts.search,
         ];
+        if (opts.replace !== "") {
+            args.push('-s', opts.replace);
+        }
+        if (opts.inplace) {
+            args.push('-w');
+        }
+        args.push(opts.target);
+        console.debug(`${opts.binary} ${args.join(' ')}`);
         const gogrep = child_process.spawn(opts.binary, args, spawnOpts);
 
         // 2. Handle gogrep output by printing it to the output channel.
 
-        outputChan.appendLine(`info: searching for \`${opts.pattern}\` pattern...`);
-        
+        if (opts.replace !== "") {
+            let message = `info: search \`${opts.search}\`, replace with \`${opts.replace}\``;
+            if (opts.inplace) {
+                message += " (inplace)";
+            }
+            outputChan.appendLine(message);
+        } else {
+            outputChan.appendLine(`info: search \`${opts.search}\``);
+
+        }
+
         // Add gogrep output to the channel.
         const filter = opts.lineFilter;
         gogrep.stderr.on('data', (data: Buffer) => {
@@ -73,7 +95,7 @@ export function runSearch(opts: SearchOptions): Promise<void> {
         gogrep.on('exit', (code) => {
             // Exit codes are taken from the gogrep sources.
             if (code === 0) {
-                outputChan.appendLine(`info: gogrep successfully`);
+                outputChan.appendLine(`info: gogrep finished successfully`);
             } else {
                 outputChan.appendLine(`info: gogrep finished with error`);
             }
