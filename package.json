@@ -1,7 +1,7 @@
 {
 	"name": "gogrep",
-	"displayName": "gogrep (Semantic Go code search)",
-	"description": "Structural, syntax-aware search for Go code",
+	"displayName": "gogrep (Semantic Go code search and replace)",
+	"description": "Structural, syntax-aware search and replace for Go code",
 	"publisher": "quasilyte",
 	"version": "0.1.5",
 	"preview": true,
@@ -28,6 +28,7 @@
 		"grep",
 		"find",
 		"search",
+		"replace",
 		"semantic",
 		"structural"
 	],
@@ -58,15 +59,15 @@
 		"commands": [
 			{
 				"command": "gogrep.searchFile",
-				"title": "gogrep: Find in This File"
+				"title": "gogrep: Find/Replace in This File"
 			},
 			{
 				"command": "gogrep.searchRootRecur",
-				"title": "gogrep: Find in Workspace (recursive)"
+				"title": "gogrep: Find/Replace in Workspace (recursive)"
 			},
 			{
 				"command": "gogrep.searchRelativeRecur",
-				"title": "gogrep: Find in This Directory (recursive)"
+				"title": "gogrep: Find/Replace in This Directory (recursive)"
 			}
 		]
 	},
