@@ -37,8 +37,6 @@ name within a query always match the same node, excluding "_".
 
 Instead of matching a literal variable, every `$<name>` matches all kinds of nodes. A pattern, like `$x` would match any expression (or statement). If a single variable used more than once in a pattern, all occurrences must match identical nodes. So, `$x=$x` finds all self-assignments. Use `$_` if you don't want to name a variable (repeated `$_` variables do not cause submatch comparison).
 
-Advanced queries may include special variable nodes: `foo(nil, $*_)` finds all `foo` function calls where the first argument is `nil` and all other arguments are ignored.
-
 Some example search patterns:
 
 * `+$x` - find usages of unary plus operator
@@ -58,7 +56,7 @@ To perform a **search-and-replace**, use `$find -> $replace` pattern syntax. Bot
 
 Additional learning resources:
 *  Although somewhat old, there is a [Daniel Martí talk on gogrep](https://talks.godoc.org/github.com/mvdan/talks/2018/gogrep.slide).
-* Another useful source of inspiration and [examples](https://github.com/quasilyte/go-ruleguard/blob/master/rules.go) is [go-ruleguard](https://github.com/quasilyte/go-ruleguard) project that uses `gogrep` for linting purposes.
+* `gogrep` tutorial articles are available in [English](https://quasilyte.dev/blog/post/gogrep/) and [Russian](https://habr.com/ru/post/505652/).
 
 ## Demo
 
